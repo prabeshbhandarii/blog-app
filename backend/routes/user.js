@@ -1,12 +1,15 @@
 import { Router } from "express";
-import { createUser } from "../controllers/UserController.js";
+import { createUser, loginUser } from "../controllers/UserController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const userRouter = Router()
 
 userRouter.get('/', (req, res)=>{
-    res.send("hello world")
+    res.send("healthy server")
 })
 
 userRouter.post('/signup', createUser)
+
+userRouter.post('/signin', authMiddleware, loginUser)
 
 export default userRouter
