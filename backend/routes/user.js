@@ -10,6 +10,6 @@ userRouter.get('/', (req, res)=>{
 
 userRouter.post('/signup', createUser)
 
-userRouter.post('/signin', authMiddleware, loginUser)
+userRouter.post('/signin', loginUser)
 
 export default userRouter
