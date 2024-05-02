@@ -35,6 +35,8 @@ export const likeBlog = async (req, res)=> {
                 { _id: postId },
                 { $pull: { likes: userId } }
             )
+
+            res.send("unliking")
         }else{
         const blog = await Blog.updateOne(
             { _id: postId },
