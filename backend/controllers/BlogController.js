@@ -36,7 +36,7 @@ export const likeBlog = async (req, res)=> {
                 { $pull: { likes: userId } }
             )
 
-            res.send("unliking")
+            res.send("unliked")
         }else{
         const blog = await Blog.updateOne(
             { _id: postId },
@@ -44,7 +44,7 @@ export const likeBlog = async (req, res)=> {
         )
         if(blog){
             return res.json({
-                msg: "Blog updated successfully",
+                msg: "Blog liked",
                 noOfLikes : likes.length
             })
         }
@@ -52,6 +52,47 @@ export const likeBlog = async (req, res)=> {
     } catch (err) {
         res.json({
             err: err.message
+        })
+    }
+}
+
+export const getBlogs = async (req, res)=> {
+    try {
+        const blogs = await Blog.find({})
+        if(!blogs){
+            return res.json({
+                msg: "no blogs sorry"
+            })
+        }
+        return res.json({
+            msg: "here are the blogs",
+            blogs: blogs
+        })
+    } catch (err) {
+        return res.json({
+            err: "opps something went wrong"
+        })
+    }
+}
+
+export const getBlog = async (req, res)=> {
+    try {
+        const postId =  req.params.postId
+        const blog = await Blog.findOne({
+            _id: postId
+        })
+        if(!blog){
+            return res.json({
+                msg: "could not find the blog"
+            })
+        }
+        return res.json({
+            msg: "here is the blog", 
+            data: blog
+        })
+    } catch (err) {
+        return res.json({
+            err: "opps something went wrong"
         })
     }
 }
