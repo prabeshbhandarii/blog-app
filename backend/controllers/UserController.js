@@ -64,32 +64,6 @@ export const loginUser = async (req, res)=>{
 }
 
 export const followUser = async (req, res)=>{
-    // const follower = req.headers['userId']
-    // const followee = req.params.userId
-    // try {
-    //     const followerToUpdate = User.findOneAndUpdate(
-    //         { _id: follower },
-    //         { $push: { following: followee } }
-    //     )
-    //     const followeeToUpdate = User.findOneAndUpdate(
-    //         { _id: followee },
-    //         { $push: { followers: follower } }
-    //     )
-    //     if(!followeeToUpdate || !followerToUpdate){
-    //         return res.json({
-    //             msg: "couldn't find user"
-    //         })
-    //     }
-    //     return res.json({
-    //         msg: "you followed " + followee
-    //     })
-    // } catch (err) {
-    //     return res.json({
-    //         err: err.message
-    //     })
-    // }
-
-
     const follower = req.headers['userId']
     const followee = req.params.userId
 
