@@ -62,3 +62,72 @@ export const loginUser = async (req, res)=>{
         })
     }
 }
+
+export const followUser = async (req, res)=>{
+    // const follower = req.headers['userId']
+    // const followee = req.params.userId
+    // try {
+    //     const followerToUpdate = User.findOneAndUpdate(
+    //         { _id: follower },
+    //         { $push: { following: followee } }
+    //     )
+    //     const followeeToUpdate = User.findOneAndUpdate(
+    //         { _id: followee },
+    //         { $push: { followers: follower } }
+    //     )
+    //     if(!followeeToUpdate || !followerToUpdate){
+    //         return res.json({
+    //             msg: "couldn't find user"
+    //         })
+    //     }
+    //     return res.json({
+    //         msg: "you followed " + followee
+    //     })
+    // } catch (err) {
+    //     return res.json({
+    //         err: err.message
+    //     })
+    // }
+
+
+    const follower = req.headers['userId']
+    const followee = req.params.userId
+
+    try {
+        const {following} = await User.findOne({
+            _id: follower
+        })
+        if(following.includes(followee)){
+            await User.updateOne(
+                { _id: follower },
+                { $pull: { following: followee } }
+            )
+            await User.updateOne(
+                { _id: followee },
+                { $pull: { followers: follower } }
+            )
+
+            return res.json({
+                msg: "Unfollowed"
+            })
+        }else{
+        const updateFollower = await User.updateOne(
+            { _id: follower },
+            { $push: { following:  followee} }
+        )
+        const updateFollowee = await User.updateOne(
+            { _id: followee },
+            { $push: { followers:  follower} }
+        )
+        if(updateFollowee && updateFollower){
+            return res.json({
+                msg: "Followed"
+            })
+        }
+    }
+    } catch (err) {
+        return res.json({
+            err: err.message
+        })
+    }
+}

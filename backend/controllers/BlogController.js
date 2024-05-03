@@ -13,7 +13,8 @@ export const createBlog = async (req, res)=> {
             })
         }
         return res.json({
-            msg: "blog created successfully"
+            msg: "blog created successfully",
+            data: blog
         })
     } catch (err) {
         res.status(500).json({
