@@ -18,7 +18,7 @@ export const signupMiddleware = (req, res, next)=> {
         }
     } catch (err) {
         return res.json({
-            msg: err.message
+            err: err.message
         })
     }
 }

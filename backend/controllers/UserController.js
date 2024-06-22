@@ -8,7 +8,7 @@ export const createUser = async (req, res)=>{
             email: email
         })
         if(existingUser){
-            return res.json({
+            return res.status(400).json({
                 msg: 'User already exists'
             })
         }
@@ -18,22 +18,26 @@ export const createUser = async (req, res)=>{
             password
         })
         if(!result){
-            return res.json({
+            return res.status(401).json({
                 msg: "could not create user"
             })
         }
         const id = result._id
-        const token = jwt.sign({id}, process.env.JWT_SECRET_KEY)
+        const token = jwt.sign(
+            { 
+                id: id, 
+                username: username
+             }, process.env.JWT_SECRET_KEY)
         res.cookie("token", token)
 
-        return res.json({
+        return res.status(200).json({
             msg: "user created successfully",
             data: result
         })
 
     } catch (err) {
-        return res.json({
-            msg: err.message
+        return res.status(500).json({
+            err: err.message
         })
     }
 }

@@ -1,11 +1,14 @@
 import { Blog } from '../db/index.js'
 
 export const createBlog = async (req, res)=> {
-    const { title, body} = req.body
+    const { title, body, image } = req.body
+    const author = req.headers['userId']
     try {
         const blog = await Blog.create({
             title,
-            body
+            body,
+            author,
+            image
         })
         if(!blog){
             return res.status(411).json({

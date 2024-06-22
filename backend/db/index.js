@@ -17,7 +17,8 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     }, 
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -43,8 +44,17 @@ const BlogSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }]
+    },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    image: {
+        type: String,
+        required: true
     }
-})
+},{timestamps: true})
 
 
 const User = mongoose.model('User', UserSchema)
