@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import MainLayout from '../../components/MainLayout';
+import { MessageContext } from '../../context/MessageContext';
 
 const Login = () => {
+  const navigate = useNavigate()
+  const { setMessage } = useContext(MessageContext)
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [message, setMessage] = useState({type: '', text: ''})
+  
   
   const handleChange = (e) => {
     setFormData({
@@ -19,8 +23,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/user/signin', formData);
+      const response = await axios.post('http://localhost:3000/user/signin', formData, {
+        withCredentials: true
+      });
       setMessage({type: 'success', text: response.data.msg})
+      navigate('/')
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.msg || 'Something went wrong!' });
     }
@@ -30,15 +37,8 @@ const Login = () => {
     <MainLayout>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-        {
-          message.text && (
-            <div className={`mb-4 text-center ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-              {message.text}
-            </div>
-          )
-        }
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
@@ -70,7 +70,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Sign Up
+              Sign In
             </button>
           </div>
         </form>

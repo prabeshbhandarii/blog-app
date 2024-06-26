@@ -10,7 +10,6 @@ const Header = () => {
       <nav className="space-x-6">
         <Link to="/" className="text-gray-800 hover:underline">Home</Link>
         <Link to="/blogs" className="text-gray-800 hover:underline">Blogs</Link>
-        
         <Link to="/contact" className="text-gray-800 hover:underline">Contact</Link>
       </nav>
       <div className="relative">

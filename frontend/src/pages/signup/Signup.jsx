@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import MainLayout from '../../components/MainLayout';
+import { MessageContext } from '../../context/MessageContext';
 
 const Signup = () => {
+  const navigate = useNavigate()
+  const { setMessage } = useContext(MessageContext)
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: ''
   });
-  const [message, setMessage] = useState({type: '', text: ''})
+  
   
   const handleChange = (e) => {
     setFormData({
@@ -20,9 +24,11 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/user/signup', formData);
-      console.log(response.data.token)
+      const response = await axios.post('http://localhost:3000/user/signup', formData, {
+        withCredentials: true
+      });
       setMessage({type: 'success', text: response.data.msg})
+      navigate('/')
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.msg || 'Something went wrong!' });
     }
@@ -34,13 +40,6 @@ const Signup = () => {
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-        {
-          message.text && (
-            <div className={`mb-4 text-center ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-              {message.text}
-            </div>
-          )
-        }
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
             <input
