@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import MainLayout from '../../components/MainLayout';
 import { MessageContext } from '../../context/MessageContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
+  const { login } = useAuth()
   const navigate = useNavigate()
   const { setMessage } = useContext(MessageContext)
   const [formData, setFormData] = useState({
@@ -27,6 +29,7 @@ const Login = () => {
         withCredentials: true
       });
       setMessage({type: 'success', text: response.data.msg})
+      login()
       navigate('/')
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.msg || 'Something went wrong!' });

@@ -4,12 +4,15 @@ import {BrowserRouter} from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 import { MessageProvider } from './context/MessageContext'
+import { AuthProvider } from './context/AuthContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
     <BrowserRouter>
       <MessageProvider>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MessageProvider>
     </BrowserRouter>
 
