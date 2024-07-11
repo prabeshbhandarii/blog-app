@@ -49,13 +49,18 @@ export const loginUser = async (req, res)=>{
             email: email,
             password: password
         })
+        const username = result.username
         if(!result){
             return res.status(411).json({
                 msg: "User with this email could not be found"
             })
         }
         const id = result._id
-        const token = jwt.sign({id}, process.env.JWT_SECRET_KEY)
+        const token = jwt.sign(
+            { 
+                id: id, 
+                username: username
+             }, process.env.JWT_SECRET_KEY)
         res.cookie("token", token)
         return res.json({
             msg: "User login successfull"
@@ -105,6 +110,39 @@ export const followUser = async (req, res)=>{
     }
     } catch (err) {
         return res.json({
+            err: err.message
+        })
+    }
+}
+
+
+export const showProfile = async (req, res) => {
+    const id = req.headers['userId']
+    try {
+        const response = await User.findById(id)
+        return res.status(200).json({
+            userData: response
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+export const editProfile = async (req, res) => {
+    const id = req.headers['userId']
+    try {
+        const { username, email, password } = req.body
+        const response = await User.findByIdAndUpdate(
+        id,
+        {username, email, password},
+        {new: true }
+    )
+    res.status(200).json({
+        msg: "User edited successfully",
+        data: response
+    })
+    } catch (err) {
+        res.status(500).json({
             err: err.message
         })
     }

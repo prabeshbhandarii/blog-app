@@ -5,25 +5,24 @@ import { z } from 'zod'
 const blogSchema = z.object({
     title: z.string().min(5).max(50),
     body: z.string().min(10).max(250),
-    author: z.instanceof(mongoose.Types.ObjectId),
-    image: z.string()
+    author: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid ObjectId'),
+    imageurl: z.string().url()
 })
 
 export const blogMiddleware = (req, res, next)=> {
     try {
-        const author = req.headers['authorName']
         const id = req.headers['userId']
-        req.body.author = new mongoose.Types.ObjectId(id)
-        const { success } = blogSchema.safeParse(req.body)
+        req.body.author = id
+        const { success, error } = blogSchema.safeParse(req.body)
         if(success){
             next()
         }else{
             return res.status(411).json({
-                msg: 'invalid input broskii'
+                msg: error.message
             })
         }
     } catch (err) {
-        return res.json({
+        return res.status(500).json({
             msg: err.message
         })
     }

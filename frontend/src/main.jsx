@@ -5,13 +5,16 @@ import App from './App.jsx'
 import './index.css'
 import { MessageProvider } from './context/MessageContext'
 import { AuthProvider } from './context/AuthContext'
+import { PostsContext, PostsProvider } from './context/PostsContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
     <BrowserRouter>
       <MessageProvider>
         <AuthProvider>
-          <App />
+          <PostsProvider>
+            <App />
+          </PostsProvider>
         </AuthProvider>
       </MessageProvider>
     </BrowserRouter>

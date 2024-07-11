@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 const Login = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
-  const { setMessage } = useContext(MessageContext)
+  const { message, setMessage } = useContext(MessageContext)
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -40,7 +40,14 @@ const Login = () => {
     <MainLayout>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
+        {message.text && (
+          <div className="fixed top-4 right-4 max-w-xs w-full z-50">
+            <div className={`text-center ${message.type === 'success' ? 'bg-green-400' : 'bg-red-500'} text-white p-4 py-5 rounded shadow-lg`}>
+              {message.text}
+            </div>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>

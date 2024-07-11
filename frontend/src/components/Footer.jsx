@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-      <footer className="w-full text-black absolute left-0">
-      <hr className="h-px my-5 bg-gray-200 border-0 dark:bg-gray-500"></hr>
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <Link to="/" className="text-lg font-bold md:ml-5">MediumClone</Link>
-          </div>
+    <footer className="absolute left-0 w-full rounded-lg shadow-m-4">
+      <hr className="h-px my-5 bg-gray-500 border-0"></hr>
+        <div className="mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+        <span className="text-gray-600 sm:text-center"><Link className='text-md' to={'/'}>Medium Clone</Link></span>
           
           <div className="flex space-x-4">
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400">
@@ -22,10 +20,9 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <div className="text-center text-gray-600 mt-4">
-          &copy; 2024 MediumClone. All rights reserved.
-        </div>
-      </footer>
+        <span className="text-sm text-gray-600 sm:text-center dark:text-gray-400">© 2023 <Link className='text-md' to={'/'}>Medium Clone</Link>. All Rights Reserved.
+        </span>
+    </footer>
   );
 };
 

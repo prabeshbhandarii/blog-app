@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'
 import LogoutButton from '../pages/logout/LogoutButton';
+import { PostsContext } from '../context/PostsContext';
 
 const Header = () => {
   const { isAuthenticated } = useAuth()
-  console.log(isAuthenticated);
+  const [search, setSearch] = useState('')
+  const { posts, setFilteredPosts } = useContext(PostsContext)
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value)
+    if(e.target.value === ''){
+      setFilteredPosts(posts)
+    }else{
+      const filtered = posts.filter(post => (
+        post.body.toLowerCase().includes(e.target.value.toLowerCase()))
+      )
+      setFilteredPosts(filtered)
+    }
+  }
+
   return (
 <header className="w-full fixed top-0 left-0 right-0 flex space justify-between items-center p-3 bg-white border-b border-gray-300">
       <div className="text-2xl font-bold">
@@ -14,11 +29,16 @@ const Header = () => {
       <nav className="space-x-6">
         <Link to="/" className="text-gray-800 hover:underline">Home</Link>
         <Link to="/blogs" className="text-gray-800 hover:underline">Blogs</Link>
-        <Link to="/contact" className="text-gray-800 hover:underline">Contact</Link>
+        {isAuthenticated && (
+        <Link to="/write" className="text-gray-800 hover:underline">Write</Link>
+        )}
       </nav>
+      
       <div className="relative">
         <input 
           type="text" 
+          onChange={handleSearchChange}
+          value={search}
           placeholder="Search..." 
           className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
         />
